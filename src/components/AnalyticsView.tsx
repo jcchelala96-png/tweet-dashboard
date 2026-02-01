@@ -34,16 +34,32 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         };
     }, [tweets]);
 
-    // Views by date (for bar chart)
-    const viewsByDate = useMemo(() => {
+    // Helper function for ISO week calculation
+    const getISOWeek = (dateStr: string) => {
+        const date = new Date(dateStr);
+        const target = new Date(date.valueOf());
+        const dayNr = (date.getDay() + 6) % 7;
+        target.setDate(target.getDate() - dayNr + 3);
+        const firstThursday = target.valueOf();
+        target.setMonth(0, 1);
+        if (target.getDay() !== 4) {
+            target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+        }
+        const weekNumber = 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
+        return `${date.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
+    };
+
+    // Views by week (for bar chart)
+    const viewsByWeek = useMemo(() => {
         const grouped: Record<string, number> = {};
         tweets.forEach(t => {
-            grouped[t.date] = (grouped[t.date] || 0) + t.metrics.views;
+            const week = getISOWeek(t.date);
+            grouped[week] = (grouped[week] || 0) + t.metrics.views;
         });
         return Object.entries(grouped)
-            .map(([date, views]) => ({ date, views }))
-            .sort((a, b) => a.date.localeCompare(b.date))
-            .slice(-10); // Last 10 dates
+            .map(([week, views]) => ({ week, views }))
+            .sort((a, b) => a.week.localeCompare(b.week))
+            .slice(-10); // Last 10 weeks
     }, [tweets]);
 
     // Category breakdown (for pie chart)
@@ -51,6 +67,15 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         const counted: Record<string, number> = {};
         tweets.forEach(t => {
             counted[t.category] = (counted[t.category] || 0) + 1;
+        });
+        return Object.entries(counted).map(([name, value]) => ({ name, value }));
+    }, [tweets]);
+
+    // Type breakdown (for pie chart)
+    const typeData = useMemo(() => {
+        const counted: Record<string, number> = {};
+        tweets.forEach(t => {
+            counted[t.type] = (counted[t.type] || 0) + 1;
         });
         return Object.entries(counted).map(([name, value]) => ({ name, value }));
     }, [tweets]);
@@ -88,20 +113,6 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
 
     // Week-over-Week data
     const weeklyData = useMemo(() => {
-        const getISOWeek = (dateStr: string) => {
-            const date = new Date(dateStr);
-            const target = new Date(date.valueOf());
-            const dayNr = (date.getDay() + 6) % 7;
-            target.setDate(target.getDate() - dayNr + 3);
-            const firstThursday = target.valueOf();
-            target.setMonth(0, 1);
-            if (target.getDay() !== 4) {
-                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
-            }
-            const weekNumber = 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
-            return `${date.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
-        };
-
         const weeklyMap: Record<string, { views: number; engagement: number }> = {};
         tweets.forEach(t => {
             const week = getISOWeek(t.date);
@@ -135,15 +146,21 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
 
             {/* Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Views Over Time */}
+                {/* Views Over Time (by Week) */}
                 <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
                     <h3 className="text-xl text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
-                        Views Over Time
+                        Views by Week
                     </h3>
-                    {viewsByDate.length > 0 ? (
+                    {viewsByWeek.length > 0 ? (
                         <ResponsiveContainer width="100%" height={250}>
-                            <BarChart data={viewsByDate}>
-                                <XAxis dataKey="date" tick={{ fill: '#7a6a5a', fontSize: 12 }} />
+                            <BarChart data={viewsByWeek}>
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fill: '#7a6a5a', fontSize: 12 }}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={60}
+                                />
                                 <YAxis tick={{ fill: '#7a6a5a', fontSize: 12 }} />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
@@ -171,7 +188,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                     cy="50%"
                                     innerRadius={60}
                                     outerRadius={90}
-                                    paddingAngle={3}
+                                    paddingAngle={categoryData.length === 1 ? 0 : 3}
                                     dataKey="value"
                                     label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                                     labelLine={false}
@@ -187,6 +204,37 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
                     )}
                 </div>
+            </div>
+
+            {/* Content by Type Row */}
+            <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
+                <h3 className="text-xl text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    Content by Type
+                </h3>
+                {typeData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie
+                                data={typeData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={70}
+                                outerRadius={110}
+                                paddingAngle={typeData.length === 1 ? 0 : 3}
+                                dataKey="value"
+                                label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
+                                labelLine={false}
+                            >
+                                {typeData.map((_, index) => (
+                                    <Cell key={`cell-type-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
+                )}
             </div>
 
             {/* Sponsored vs Organic Comparison */}
