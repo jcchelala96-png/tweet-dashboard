@@ -245,7 +245,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px', padding: '8px 12px' }}
                                     labelStyle={{ color: '#5a4a3a' }}
-                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Views']}
+                                    formatter={(value: number | undefined) => [value?.toLocaleString() ?? '0', 'Avg Views']}
                                 />
                                 <Bar dataKey="avgViews" fill="#8b6f47" radius={[6, 6, 0, 0]} />
                             </BarChart>
@@ -274,7 +274,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px', padding: '8px 12px' }}
                                     labelStyle={{ color: '#5a4a3a' }}
-                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Engagement']}
+                                    formatter={(value: number | undefined) => [value?.toLocaleString() ?? '0', 'Avg Engagement']}
                                 />
                                 <Bar dataKey="avgEngagement" fill="#c4a67a" radius={[6, 6, 0, 0]} />
                             </BarChart>
@@ -454,7 +454,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px', padding: '8px 12px' }}
                                     labelStyle={{ color: '#5a4a3a' }}
-                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Likes']}
+                                    formatter={(value: number | undefined) => [value?.toLocaleString() ?? '0', 'Avg Likes']}
                                 />
                                 <Bar dataKey="avgLikes" fill="#d4b896" radius={[6, 6, 0, 0]} />
                             </BarChart>
@@ -483,7 +483,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px', padding: '8px 12px' }}
                                     labelStyle={{ color: '#5a4a3a' }}
-                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Retweets']}
+                                    formatter={(value: number | undefined) => [value?.toLocaleString() ?? '0', 'Avg Retweets']}
                                 />
                                 <Bar dataKey="avgRetweets" fill="#a89070" radius={[6, 6, 0, 0]} />
                             </BarChart>
