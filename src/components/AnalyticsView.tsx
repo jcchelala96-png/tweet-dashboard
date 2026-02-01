@@ -63,6 +63,33 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         return `${date.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
     };
 
+    // Helper function to get week date range label
+    const getWeekLabel = (dateStr: string) => {
+        const date = new Date(dateStr);
+        // Get Monday of the week
+        const dayOfWeek = date.getDay();
+        const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust for Sunday
+        const monday = new Date(date);
+        monday.setDate(date.getDate() + diff);
+
+        // Get Sunday of the week
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const startMonth = monthNames[monday.getMonth()];
+        const endMonth = monthNames[sunday.getMonth()];
+        const startDay = monday.getDate();
+        const endDay = sunday.getDate();
+
+        // If same month, show "Jan 19-25", otherwise "Jan 30-Feb 5"
+        if (startMonth === endMonth) {
+            return `${startMonth} ${startDay}-${endDay}`;
+        } else {
+            return `${startMonth} ${startDay}-${endMonth} ${endDay}`;
+        }
+    };
+
     // Weekly averages (for comparison charts)
     const weeklyAverages = useMemo(() => {
         const weeklyMap: Record<string, {
@@ -72,6 +99,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
             totalRetweets: number;
             totalReplies: number;
             count: number;
+            firstDate: string;
         }> = {};
 
         tweets.forEach(t => {
@@ -83,7 +111,8 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                     totalEngagement: 0,
                     totalRetweets: 0,
                     totalReplies: 0,
-                    count: 0
+                    count: 0,
+                    firstDate: t.date
                 };
             }
             weeklyMap[week].totalViews += t.metrics.views;
@@ -92,11 +121,16 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
             weeklyMap[week].totalReplies += t.metrics.replies;
             weeklyMap[week].totalEngagement += t.metrics.likes + t.metrics.retweets + t.metrics.replies;
             weeklyMap[week].count += 1;
+            // Keep earliest date for the week
+            if (t.date < weeklyMap[week].firstDate) {
+                weeklyMap[week].firstDate = t.date;
+            }
         });
 
         return Object.entries(weeklyMap)
             .map(([week, data]) => ({
                 week,
+                weekLabel: getWeekLabel(data.firstDate),
                 avgViews: Math.round(data.totalViews / data.count),
                 avgLikes: Math.round(data.totalLikes / data.count),
                 avgEngagement: Math.round(data.totalEngagement / data.count),
@@ -201,7 +235,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
                             <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
-                                    dataKey="week"
+                                    dataKey="weekLabel"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
@@ -230,7 +264,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
                             <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
-                                    dataKey="week"
+                                    dataKey="weekLabel"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
@@ -410,7 +444,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
                             <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
-                                    dataKey="week"
+                                    dataKey="weekLabel"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
@@ -439,7 +473,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
                             <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
-                                    dataKey="week"
+                                    dataKey="weekLabel"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
