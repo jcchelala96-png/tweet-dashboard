@@ -5,6 +5,7 @@ import { Tweet } from '@/lib/types';
 import { AnalyticsView } from './AnalyticsView';
 import { DataEntryView } from './DataEntryView';
 import { SettingsPanel } from './SettingsPanel';
+import { BarChart3, PenLine, Settings } from 'lucide-react';
 
 type View = 'analytics' | 'data-entry';
 
@@ -50,60 +51,81 @@ export function Dashboard() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-[#7a6a5a] text-lg">Loading your dashboard...</div>
+            <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background)' }}>
+                <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--accent-primary)', borderTopColor: 'transparent' }} />
+                    <span style={{ color: 'var(--foreground-muted)' }}>Loading dashboard...</span>
+                </div>
             </div>
         );
     }
 
-    const tabStyle = (isActive: boolean) => ({
-        background: isActive
-            ? 'linear-gradient(135deg, #8b6f47 0%, #6b5237 100%)'
-            : 'linear-gradient(135deg, #d4b896 0%, #c4a67a 100%)',
-        color: isActive ? 'white' : '#4a3a2a',
-    });
-
     return (
-        <div className="min-h-screen p-4 md:p-8">
-            <div className="max-w-6xl mx-auto">
-                {/* Header */}
-                <div className="bg-[#fffbf7] rounded-3xl p-8 md:p-10 shadow-xl mb-8">
-                    <div className="flex justify-between items-start mb-4">
-                        <div className="text-center flex-1">
-                            <h1 className="text-3xl md:text-4xl text-[#5a4a3a] mb-2" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
-                                Content Performance
-                            </h1>
-                            <p className="text-[#7a6a5a] text-lg">
-                                Track your tweet performance with ease ✨
-                            </p>
+        <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+            {/* Top Navigation Bar */}
+            <header
+                className="sticky top-0 z-50 backdrop-blur-xl"
+                style={{
+                    background: 'rgba(10, 10, 11, 0.8)',
+                    borderBottom: '1px solid var(--border-subtle)'
+                }}
+            >
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                    {/* Logo / Title */}
+                    <div className="flex items-center gap-3">
+                        <div
+                            className="w-9 h-9 rounded-xl flex items-center justify-center"
+                            style={{ background: 'var(--accent-primary)' }}
+                        >
+                            <BarChart3 className="w-5 h-5 text-white" />
                         </div>
-                        <SettingsPanel
-                            categories={settings.categories}
-                            types={settings.types}
-                            onUpdate={loadSettings}
-                        />
+                        <h1
+                            className="text-xl font-semibold"
+                            style={{ color: 'var(--foreground)', letterSpacing: '-0.02em' }}
+                        >
+                            Content Performance
+                        </h1>
                     </div>
 
                     {/* Tab Navigation */}
-                    <div className="flex justify-center gap-4 mt-6">
+                    <nav className="flex items-center gap-2">
                         <button
                             onClick={() => setActiveView('analytics')}
-                            className="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-                            style={tabStyle(activeView === 'analytics')}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+                            style={{
+                                background: activeView === 'analytics' ? 'var(--accent-primary)' : 'transparent',
+                                color: activeView === 'analytics' ? 'white' : 'var(--foreground-muted)',
+                                border: activeView === 'analytics' ? 'none' : '1px solid var(--border-subtle)'
+                            }}
                         >
-                            📊 Analytics
+                            <BarChart3 className="w-4 h-4" />
+                            Analytics
                         </button>
                         <button
                             onClick={() => setActiveView('data-entry')}
-                            className="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-                            style={tabStyle(activeView === 'data-entry')}
+                            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+                            style={{
+                                background: activeView === 'data-entry' ? 'var(--accent-primary)' : 'transparent',
+                                color: activeView === 'data-entry' ? 'white' : 'var(--foreground-muted)',
+                                border: activeView === 'data-entry' ? 'none' : '1px solid var(--border-subtle)'
+                            }}
                         >
-                            ✏️ Data Entry
+                            <PenLine className="w-4 h-4" />
+                            Data Entry
                         </button>
-                    </div>
-                </div>
+                    </nav>
 
-                {/* View Content */}
+                    {/* Settings */}
+                    <SettingsPanel
+                        categories={settings.categories}
+                        types={settings.types}
+                        onUpdate={loadSettings}
+                    />
+                </div>
+            </header>
+
+            {/* Main Content */}
+            <main className="max-w-7xl mx-auto px-6 py-8">
                 {activeView === 'analytics' ? (
                     <AnalyticsView tweets={tweets} />
                 ) : (
@@ -116,7 +138,7 @@ export function Dashboard() {
                         types={settings.types}
                     />
                 )}
-            </div>
+            </main>
         </div>
     );
 }
