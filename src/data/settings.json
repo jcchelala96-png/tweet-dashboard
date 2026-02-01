@@ -1,17 +1,18 @@
 {
   "categories": [
-    "Education",
-    "Personal",
-    "Promotion",
-    "News",
     "Sponsored",
-    "Airdrop",
-    "Thread"
+    "Organic"
   ],
   "types": [
-    "Tweet",
-    "Video",
-    "Quote",
-    "Sponsored"
+    "Education",
+    "Personal",
+    "News",
+    "Airdrop",
+    "Thread",
+    "Dapp",
+    "Hot Take",
+    "Yield Farming",
+    "Vibe Coding",
+    "Portfolio"
   ]
 }

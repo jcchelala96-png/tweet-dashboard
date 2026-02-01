@@ -1,7 +1,307 @@
 [
   {
+    "id": "1769971294132",
+    "date": "2026-01-24",
+    "category": "Sponsored",
+    "type": "Yield Farming",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2015038557333999944",
+    "metrics": {
+      "views": 4071,
+      "likes": 39,
+      "retweets": 3,
+      "replies": 20,
+      "bookmarks": 17
+    }
+  },
+  {
+    "id": "1769971269181",
+    "date": "2026-01-28",
+    "category": "Organic",
+    "type": "Dapp",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2016118571483447674",
+    "metrics": {
+      "views": 26600,
+      "likes": 293,
+      "retweets": 40,
+      "replies": 35,
+      "bookmarks": 421
+    }
+  },
+  {
+    "id": "1769971250594",
+    "date": "2026-01-28",
+    "category": "Organic",
+    "type": "Personal",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2016480210049265707",
+    "metrics": {
+      "views": 16400,
+      "likes": 110,
+      "retweets": 8,
+      "replies": 33,
+      "bookmarks": 10
+    }
+  },
+  {
+    "id": "1769971223341",
+    "date": "2026-01-29",
+    "category": "Organic",
+    "type": "Dapp",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2016904749170245911",
+    "metrics": {
+      "views": 7647,
+      "likes": 60,
+      "retweets": 4,
+      "replies": 14,
+      "bookmarks": 52
+    }
+  },
+  {
+    "id": "1769971192602",
+    "date": "2026-01-29",
+    "category": "Organic",
+    "type": "Hot Take",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2016842086205493315",
+    "metrics": {
+      "views": 22800,
+      "likes": 138,
+      "retweets": 5,
+      "replies": 88,
+      "bookmarks": 24
+    }
+  },
+  {
+    "id": "1769971167418",
+    "date": "2026-01-30",
+    "category": "Sponsored",
+    "type": "Yield Farming",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2017267648078258327",
+    "metrics": {
+      "views": 5770,
+      "likes": 31,
+      "retweets": 4,
+      "replies": 12,
+      "bookmarks": 2
+    }
+  },
+  {
+    "id": "1769971146630",
+    "date": "2026-01-31",
+    "category": "Organic",
+    "type": "Personal",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2017773894464323706",
+    "metrics": {
+      "views": 5043,
+      "likes": 51,
+      "retweets": 1,
+      "replies": 16,
+      "bookmarks": 1
+    }
+  },
+  {
+    "id": "1769969826809",
+    "date": "2026-01-22",
+    "category": "Sponsored",
+    "type": "Airdrop",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2015038557333999944",
+    "metrics": {
+      "views": 3068,
+      "likes": 33,
+      "retweets": 3,
+      "replies": 16,
+      "bookmarks": 14
+    }
+  },
+  {
+    "id": "1769969809506",
+    "date": "2026-01-22",
+    "category": "Sponsored",
+    "type": "Yield Farming",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2014435739006574641",
+    "metrics": {
+      "views": 6831,
+      "likes": 38,
+      "retweets": 3,
+      "replies": 7,
+      "bookmarks": 14
+    }
+  },
+  {
+    "id": "1769969793526",
+    "date": "2026-01-22",
+    "category": "Organic",
+    "type": "News",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2013957634412675111",
+    "metrics": {
+      "views": 10400,
+      "likes": 91,
+      "retweets": 5,
+      "replies": 18,
+      "bookmarks": 82
+    }
+  },
+  {
+    "id": "1769969776112",
+    "date": "2026-01-22",
+    "category": "Sponsored",
+    "type": "Portfolio",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2013645271171772855",
+    "metrics": {
+      "views": 6689,
+      "likes": 35,
+      "retweets": 3,
+      "replies": 10,
+      "bookmarks": 20
+    }
+  },
+  {
+    "id": "1769969750312",
+    "date": "2026-01-22",
+    "category": "Organic",
+    "type": "Vibe Coding",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2013137294467756174",
+    "metrics": {
+      "views": 5120,
+      "likes": 50,
+      "retweets": 1,
+      "replies": 15,
+      "bookmarks": 21
+    }
+  },
+  {
+    "id": "1769969723912",
+    "date": "2026-01-22",
+    "category": "Organic",
+    "type": "Hot Take",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2013163102658085000",
+    "metrics": {
+      "views": 4262,
+      "likes": 33,
+      "retweets": 1,
+      "replies": 24,
+      "bookmarks": 3
+    }
+  },
+  {
+    "id": "1769969707572",
+    "date": "2026-01-22",
+    "category": "Organic",
+    "type": "Hot Take",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2014172801486278661",
+    "metrics": {
+      "views": 7774,
+      "likes": 131,
+      "retweets": 4,
+      "replies": 41,
+      "bookmarks": 4
+    }
+  },
+  {
+    "id": "1769969689862",
+    "date": "2026-01-22",
+    "category": "Organic",
+    "type": "Personal",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2014500569097150854",
+    "metrics": {
+      "views": 3563,
+      "likes": 43,
+      "retweets": 4,
+      "replies": 14,
+      "bookmarks": 1
+    }
+  },
+  {
+    "id": "1769969654761",
+    "date": "2026-01-14",
+    "category": "Organic",
+    "type": "Yield Farming",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2012331882604597656",
+    "metrics": {
+      "views": 18500,
+      "likes": 176,
+      "retweets": 29,
+      "replies": 31,
+      "bookmarks": 147
+    }
+  },
+  {
+    "id": "1769969635328",
+    "date": "2026-01-14",
+    "category": "Sponsored",
+    "type": "Yield Farming",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2012194232329732201",
+    "metrics": {
+      "views": 9227,
+      "likes": 55,
+      "retweets": 9,
+      "replies": 7,
+      "bookmarks": 26
+    }
+  },
+  {
+    "id": "1769969602163",
+    "date": "2026-01-14",
+    "category": "Organic",
+    "type": "Hot Take",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2011315187299823978",
+    "metrics": {
+      "views": 6828,
+      "likes": 82,
+      "retweets": 2,
+      "replies": 22,
+      "bookmarks": 5
+    }
+  },
+  {
+    "id": "1769969569101",
+    "date": "2026-01-14",
+    "category": "Sponsored",
+    "type": "Dapp",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2011467915678077064",
+    "metrics": {
+      "views": 6756,
+      "likes": 39,
+      "retweets": 2,
+      "replies": 17,
+      "bookmarks": 5
+    }
+  },
+  {
+    "id": "1769969424120",
+    "date": "2026-01-14",
+    "category": "Organic",
+    "type": "Personal",
+    "topic": "",
+    "url": "https://x.com/thedefiedge/status/2011310560839942252",
+    "metrics": {
+      "views": 3409,
+      "likes": 46,
+      "retweets": 1,
+      "replies": 18,
+      "bookmarks": 10
+    }
+  },
+  {
     "id": "1769453962814",
-    "date": "2026-01-26",
+    "date": "2026-01-21",
     "category": "Sponsored",
     "type": "Thread",
     "topic": "",

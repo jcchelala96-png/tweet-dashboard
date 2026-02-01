@@ -45,3 +45,5 @@ quiz-project/
 inspect_excel.js
 *.xlsx
 .claude/
+
+.vercel
