@@ -11,7 +11,21 @@ interface AnalyticsViewProps {
     tweets: Tweet[];
 }
 
+// Chart styling constants
 const COLORS = ['#8b6f47', '#c4a67a', '#d4b896', '#6b5237', '#a89070'];
+
+// Bar chart configuration
+const BAR_CHART_HEIGHT = 360;
+const BAR_CHART_MARGINS = { top: 15, right: 30, left: 20, bottom: 80 };
+const X_AXIS_HEIGHT = 100;
+
+// Pie chart configuration
+const PIE_CHART_HEIGHT = 280;
+const PIE_INNER_RADIUS = 45;
+const PIE_OUTER_RADIUS = 75;
+const PIE_CENTER_Y = '40%';
+const PIE_LEGEND_HEIGHT = 40;
+const PIE_LEGEND_PADDING = '20px';
 
 export function AnalyticsView({ tweets }: AnalyticsViewProps) {
     // Calculate stats
@@ -184,14 +198,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Avg Views per Tweet (Weekly)
                     </h3>
                     {weeklyAverages.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={320}>
-                            <BarChart data={weeklyAverages} margin={{ top: 15, right: 25, left: 10, bottom: 50 }}>
+                        <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
+                            <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
                                     dataKey="week"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={80}
+                                    height={X_AXIS_HEIGHT}
                                 />
                                 <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
                                 <Tooltip
@@ -213,14 +227,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Avg Engagement per Tweet (Weekly)
                     </h3>
                     {weeklyAverages.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={320}>
-                            <BarChart data={weeklyAverages} margin={{ top: 15, right: 25, left: 10, bottom: 50 }}>
+                        <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
+                            <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
                                     dataKey="week"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={80}
+                                    height={X_AXIS_HEIGHT}
                                 />
                                 <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
                                 <Tooltip
@@ -245,14 +259,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Content by Category
                     </h3>
                     {categoryData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={280}>
+                        <ResponsiveContainer width="100%" height={PIE_CHART_HEIGHT}>
                             <PieChart>
                                 <Pie
                                     data={categoryData}
                                     cx="50%"
-                                    cy="40%"
-                                    innerRadius={45}
-                                    outerRadius={75}
+                                    cy={PIE_CENTER_Y}
+                                    innerRadius={PIE_INNER_RADIUS}
+                                    outerRadius={PIE_OUTER_RADIUS}
                                     paddingAngle={categoryData.length === 1 ? 0 : 3}
                                     dataKey="value"
                                     label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
@@ -262,7 +276,11 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Legend verticalAlign="bottom" height={40} wrapperStyle={{ paddingTop: '20px' }} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={PIE_LEGEND_HEIGHT}
+                                    wrapperStyle={{ paddingTop: PIE_LEGEND_PADDING }}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     ) : (
@@ -276,14 +294,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Content by Type
                     </h3>
                     {typeData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={280}>
+                        <ResponsiveContainer width="100%" height={PIE_CHART_HEIGHT}>
                             <PieChart>
                                 <Pie
                                     data={typeData}
                                     cx="50%"
-                                    cy="40%"
-                                    innerRadius={45}
-                                    outerRadius={75}
+                                    cy={PIE_CENTER_Y}
+                                    innerRadius={PIE_INNER_RADIUS}
+                                    outerRadius={PIE_OUTER_RADIUS}
                                     paddingAngle={typeData.length === 1 ? 0 : 3}
                                     dataKey="value"
                                     label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
@@ -293,7 +311,11 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                         <Cell key={`cell-type-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Legend verticalAlign="bottom" height={40} wrapperStyle={{ paddingTop: '20px' }} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={PIE_LEGEND_HEIGHT}
+                                    wrapperStyle={{ paddingTop: PIE_LEGEND_PADDING }}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     ) : (
@@ -385,14 +407,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Avg Likes per Tweet (Weekly)
                     </h3>
                     {weeklyAverages.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={320}>
-                            <BarChart data={weeklyAverages} margin={{ top: 15, right: 25, left: 10, bottom: 50 }}>
+                        <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
+                            <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
                                     dataKey="week"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={80}
+                                    height={X_AXIS_HEIGHT}
                                 />
                                 <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
                                 <Tooltip
@@ -414,14 +436,14 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         Avg Retweets per Tweet (Weekly)
                     </h3>
                     {weeklyAverages.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={320}>
-                            <BarChart data={weeklyAverages} margin={{ top: 15, right: 25, left: 10, bottom: 50 }}>
+                        <ResponsiveContainer width="100%" height={BAR_CHART_HEIGHT}>
+                            <BarChart data={weeklyAverages} margin={BAR_CHART_MARGINS}>
                                 <XAxis
                                     dataKey="week"
                                     tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={80}
+                                    height={X_AXIS_HEIGHT}
                                 />
                                 <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
                                 <Tooltip
