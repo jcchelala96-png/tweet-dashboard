@@ -1,4 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tweet Dashboard
+
+A comprehensive analytics dashboard for tracking and analyzing tweet performance. Built with Next.js 16, React 19, TailwindCSS 4, and Recharts.
+
+**Live Demo:** [https://tweet-dashboard-omega.vercel.app](https://tweet-dashboard-omega.vercel.app)
+
+**GitHub Repository:** [https://github.com/jcchelala96-png/tweet-dashboard](https://github.com/jcchelala96-png/tweet-dashboard)
+
+## Features
+
+- **Data Entry Interface** - Add, edit, and manage tweet data
+- **Analytics Dashboard** - Visualize tweet performance with interactive charts
+  - Top performing tweets table
+  - Category distribution (pie chart)
+  - Sponsored vs Organic comparison
+  - Week-over-week trends
+- **Excel Import** - Import tweet data from Excel files
+- **Settings Management** - Configure social media handles
 
 ## Getting Started
 
