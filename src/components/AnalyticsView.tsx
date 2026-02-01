@@ -49,17 +49,49 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         return `${date.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
     };
 
-    // Views by week (for bar chart)
-    const viewsByWeek = useMemo(() => {
-        const grouped: Record<string, number> = {};
+    // Weekly averages (for comparison charts)
+    const weeklyAverages = useMemo(() => {
+        const weeklyMap: Record<string, {
+            totalViews: number;
+            totalLikes: number;
+            totalEngagement: number;
+            totalRetweets: number;
+            totalReplies: number;
+            count: number;
+        }> = {};
+
         tweets.forEach(t => {
             const week = getISOWeek(t.date);
-            grouped[week] = (grouped[week] || 0) + t.metrics.views;
+            if (!weeklyMap[week]) {
+                weeklyMap[week] = {
+                    totalViews: 0,
+                    totalLikes: 0,
+                    totalEngagement: 0,
+                    totalRetweets: 0,
+                    totalReplies: 0,
+                    count: 0
+                };
+            }
+            weeklyMap[week].totalViews += t.metrics.views;
+            weeklyMap[week].totalLikes += t.metrics.likes;
+            weeklyMap[week].totalRetweets += t.metrics.retweets;
+            weeklyMap[week].totalReplies += t.metrics.replies;
+            weeklyMap[week].totalEngagement += t.metrics.likes + t.metrics.retweets + t.metrics.replies;
+            weeklyMap[week].count += 1;
         });
-        return Object.entries(grouped)
-            .map(([week, views]) => ({ week, views }))
+
+        return Object.entries(weeklyMap)
+            .map(([week, data]) => ({
+                week,
+                avgViews: Math.round(data.totalViews / data.count),
+                avgLikes: Math.round(data.totalLikes / data.count),
+                avgEngagement: Math.round(data.totalEngagement / data.count),
+                avgRetweets: Math.round(data.totalRetweets / data.count),
+                avgReplies: Math.round(data.totalReplies / data.count),
+                tweetCount: data.count
+            }))
             .sort((a, b) => a.week.localeCompare(b.week))
-            .slice(-10); // Last 10 weeks
+            .slice(-12); // Last 12 weeks
     }, [tweets]);
 
     // Category breakdown (for pie chart)
@@ -144,29 +176,30 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                 <StatCard label="Avg Engagement / Tweet" value={stats.avgEngagement.toLocaleString()} accent />
             </div>
 
-            {/* Charts Row */}
+            {/* Weekly Performance Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Views Over Time (by Week) */}
+                {/* Average Views per Tweet by Week */}
                 <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                    <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
-                        Views by Week
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                        Avg Views per Tweet (Weekly)
                     </h3>
-                    {viewsByWeek.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={280}>
-                            <BarChart data={viewsByWeek} margin={{ top: 5, right: 10, left: 0, bottom: 30 }}>
+                    {weeklyAverages.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={weeklyAverages} margin={{ top: 10, right: 15, left: 0, bottom: 35 }}>
                                 <XAxis
                                     dataKey="week"
-                                    tick={{ fill: '#7a6a5a', fontSize: 12 }}
+                                    tick={{ fill: '#7a6a5a', fontSize: 11 }}
                                     angle={-45}
                                     textAnchor="end"
-                                    height={70}
+                                    height={75}
                                 />
-                                <YAxis tick={{ fill: '#7a6a5a', fontSize: 12 }} />
+                                <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
                                     labelStyle={{ color: '#5a4a3a' }}
+                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Views']}
                                 />
-                                <Bar dataKey="views" fill="#8b6f47" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="avgViews" fill="#8b6f47" radius={[6, 6, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
@@ -174,20 +207,52 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                     )}
                 </div>
 
+                {/* Average Engagement per Tweet by Week */}
+                <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                        Avg Engagement per Tweet (Weekly)
+                    </h3>
+                    {weeklyAverages.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={weeklyAverages} margin={{ top: 10, right: 15, left: 0, bottom: 35 }}>
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fill: '#7a6a5a', fontSize: 11 }}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={75}
+                                />
+                                <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
+                                    labelStyle={{ color: '#5a4a3a' }}
+                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Engagement']}
+                                />
+                                <Bar dataKey="avgEngagement" fill="#c4a67a" radius={[6, 6, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
+                    )}
+                </div>
+            </div>
+
+            {/* Breakdown Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Category Breakdown */}
                 <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                    <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
                         Content by Category
                     </h3>
                     {categoryData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={280}>
-                            <PieChart margin={{ top: 0, right: 0, bottom: 10, left: 0 }}>
+                        <ResponsiveContainer width="100%" height={260}>
+                            <PieChart>
                                 <Pie
                                     data={categoryData}
                                     cx="50%"
-                                    cy="45%"
-                                    innerRadius={55}
-                                    outerRadius={85}
+                                    cy="42%"
+                                    innerRadius={50}
+                                    outerRadius={80}
                                     paddingAngle={categoryData.length === 1 ? 0 : 3}
                                     dataKey="value"
                                     label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
@@ -197,30 +262,28 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Legend verticalAlign="bottom" height={36} />
+                                <Legend verticalAlign="bottom" height={32} />
                             </PieChart>
                         </ResponsiveContainer>
                     ) : (
                         <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
                     )}
                 </div>
-            </div>
 
-            {/* Content by Type Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Type Breakdown */}
                 <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                    <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
                         Content by Type
                     </h3>
                     {typeData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={280}>
-                            <PieChart margin={{ top: 0, right: 0, bottom: 10, left: 0 }}>
+                        <ResponsiveContainer width="100%" height={260}>
+                            <PieChart>
                                 <Pie
                                     data={typeData}
                                     cx="50%"
-                                    cy="45%"
-                                    innerRadius={55}
-                                    outerRadius={85}
+                                    cy="42%"
+                                    innerRadius={50}
+                                    outerRadius={80}
                                     paddingAngle={typeData.length === 1 ? 0 : 3}
                                     dataKey="value"
                                     label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
@@ -230,23 +293,18 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                                         <Cell key={`cell-type-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Legend verticalAlign="bottom" height={36} />
+                                <Legend verticalAlign="bottom" height={32} />
                             </PieChart>
                         </ResponsiveContainer>
                     ) : (
                         <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
                     )}
                 </div>
-
-                {/* Empty space for future chart or keep for visual balance */}
-                <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl opacity-0 pointer-events-none lg:block hidden">
-                    {/* Placeholder for visual grid balance */}
-                </div>
             </div>
 
             {/* Sponsored vs Organic Comparison */}
             <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
                     Sponsored vs Organic Content
                 </h3>
                 {tweets.length > 0 ? (
@@ -319,65 +377,70 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                 )}
             </div>
 
-            {/* Week-over-Week Trends */}
-            <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
-                    Week-over-Week Trends
-                </h3>
-                {weeklyData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={320}>
-                        <ComposedChart data={weeklyData} margin={{ top: 10, right: 30, left: 10, bottom: 40 }}>
-                            <XAxis
-                                dataKey="week"
-                                tick={{ fill: '#7a6a5a', fontSize: 12 }}
-                                angle={-45}
-                                textAnchor="end"
-                                height={80}
-                            />
-                            <YAxis
-                                yAxisId="left"
-                                tick={{ fill: '#7a6a5a', fontSize: 12 }}
-                                label={{ value: 'Views', angle: -90, position: 'insideLeft', fill: '#7a6a5a', offset: 10 }}
-                            />
-                            <YAxis
-                                yAxisId="right"
-                                orientation="right"
-                                tick={{ fill: '#7a6a5a', fontSize: 12 }}
-                                label={{ value: 'Engagement', angle: 90, position: 'insideRight', fill: '#7a6a5a', offset: 10 }}
-                            />
-                            <Tooltip
-                                contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
-                                labelStyle={{ color: '#5a4a3a' }}
-                            />
-                            <Legend wrapperStyle={{ paddingTop: '10px' }} />
-                            <Area
-                                yAxisId="left"
-                                type="monotone"
-                                dataKey="views"
-                                fill="#d4b896"
-                                stroke="#8b6f47"
-                                strokeWidth={2}
-                                name="Weekly Views"
-                            />
-                            <Line
-                                yAxisId="right"
-                                type="monotone"
-                                dataKey="engagement"
-                                stroke="#6b5237"
-                                strokeWidth={3}
-                                dot={{ fill: '#6b5237', r: 4 }}
-                                name="Weekly Engagement"
-                            />
-                        </ComposedChart>
-                    </ResponsiveContainer>
-                ) : (
-                    <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
-                )}
+            {/* Weekly Detailed Metrics */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Average Likes per Tweet by Week */}
+                <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                        Avg Likes per Tweet (Weekly)
+                    </h3>
+                    {weeklyAverages.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={weeklyAverages} margin={{ top: 10, right: 15, left: 0, bottom: 35 }}>
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fill: '#7a6a5a', fontSize: 11 }}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={75}
+                                />
+                                <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
+                                    labelStyle={{ color: '#5a4a3a' }}
+                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Likes']}
+                                />
+                                <Bar dataKey="avgLikes" fill="#d4b896" radius={[6, 6, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
+                    )}
+                </div>
+
+                {/* Average Retweets per Tweet by Week */}
+                <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
+                    <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                        Avg Retweets per Tweet (Weekly)
+                    </h3>
+                    {weeklyAverages.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={weeklyAverages} margin={{ top: 10, right: 15, left: 0, bottom: 35 }}>
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fill: '#7a6a5a', fontSize: 11 }}
+                                    angle={-45}
+                                    textAnchor="end"
+                                    height={75}
+                                />
+                                <YAxis tick={{ fill: '#7a6a5a', fontSize: 11 }} />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#fffbf7', border: '1px solid #e0d0c0', borderRadius: '8px' }}
+                                    labelStyle={{ color: '#5a4a3a' }}
+                                    formatter={(value: number) => [value.toLocaleString(), 'Avg Retweets']}
+                                />
+                                <Bar dataKey="avgRetweets" fill="#a89070" radius={[6, 6, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <p className="text-[#7a6a5a] text-center py-12">No data yet</p>
+                    )}
+                </div>
             </div>
 
             {/* Top Performers */}
             <div className="bg-[#fffbf7] rounded-3xl p-6 shadow-xl">
-                <h3 className="text-xl text-[#5a4a3a] mb-6" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                <h3 className="text-lg font-semibold text-[#5a4a3a] mb-4" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
                     Top Performers
                 </h3>
                 {topPerformers.length > 0 ? (
