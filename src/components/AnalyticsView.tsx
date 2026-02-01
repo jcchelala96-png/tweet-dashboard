@@ -15,9 +15,9 @@ interface AnalyticsViewProps {
 const COLORS = ['#8b6f47', '#c4a67a', '#d4b896', '#6b5237', '#a89070'];
 
 // Bar chart configuration
-const BAR_CHART_HEIGHT = 360;
-const BAR_CHART_MARGINS = { top: 15, right: 30, left: 20, bottom: 80 };
-const X_AXIS_HEIGHT = 100;
+const BAR_CHART_HEIGHT = 400;
+const BAR_CHART_MARGINS = { top: 20, right: 40, left: 40, bottom: 100 };
+const X_AXIS_HEIGHT = 110;
 
 // Pie chart configuration
 const PIE_CHART_HEIGHT = 280;
