@@ -1,0 +1,268 @@
+[
+  {
+    "id": "0",
+    "date": "2026-01-26",
+    "category": "Airdrop",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 3068,
+      "likes": 33,
+      "retweets": 3,
+      "replies": 16
+    }
+  },
+  {
+    "id": "1",
+    "date": "2026-01-26",
+    "category": "Yield Farming",
+    "type": "Sponsored",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 6831,
+      "likes": 38,
+      "retweets": 3,
+      "replies": 7
+    }
+  },
+  {
+    "id": "2",
+    "date": "2026-01-26",
+    "category": "Top Reads",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 10400,
+      "likes": 91,
+      "retweets": 5,
+      "replies": 18
+    }
+  },
+  {
+    "id": "3",
+    "date": "2026-01-26",
+    "category": "Portfolio",
+    "type": "Sponsored",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 6689,
+      "likes": 35,
+      "retweets": 3,
+      "replies": 10
+    }
+  },
+  {
+    "id": "4",
+    "date": "2026-01-26",
+    "category": "Vibe Coding",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 5120,
+      "likes": 50,
+      "retweets": 1,
+      "replies": 15
+    }
+  },
+  {
+    "id": "5",
+    "date": "2026-01-26",
+    "category": "Hot Take",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 4262,
+      "likes": 33,
+      "retweets": 1,
+      "replies": 24
+    }
+  },
+  {
+    "id": "6",
+    "date": "2026-01-26",
+    "category": "Hot Take",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 7774,
+      "likes": 131,
+      "retweets": 4,
+      "replies": 41
+    }
+  },
+  {
+    "id": "7",
+    "date": "2026-01-26",
+    "category": "Opinion",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 3563,
+      "likes": 43,
+      "retweets": 4,
+      "replies": 14
+    }
+  },
+  {
+    "id": "8",
+    "date": "2026-01-26",
+    "category": "Uncategorized",
+    "type": "Other",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 5963.375,
+      "likes": 56.75,
+      "retweets": 3,
+      "replies": 18.125
+    }
+  },
+  {
+    "id": "9",
+    "date": "2026-01-26",
+    "category": "Organic",
+    "type": 6,
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0
+    }
+  },
+  {
+    "id": "10",
+    "date": "2026-01-26",
+    "category": "Sponsored",
+    "type": 2,
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0
+    }
+  },
+  {
+    "id": "11",
+    "date": "2026-01-26",
+    "category": "Week 1\nJan 18",
+    "type": "Other",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0
+    }
+  },
+  {
+    "id": "12",
+    "date": "2026-01-26",
+    "category": "Stablecoin Yields",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 18500,
+      "likes": 176,
+      "retweets": 29,
+      "replies": 31
+    }
+  },
+  {
+    "id": "13",
+    "date": "2026-01-26",
+    "category": "Yield Farming",
+    "type": "Sponsored",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 9227,
+      "likes": 55,
+      "retweets": 9,
+      "replies": 7
+    }
+  },
+  {
+    "id": "14",
+    "date": "2026-01-26",
+    "category": "Hot Take",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 6828,
+      "likes": 82,
+      "retweets": 2,
+      "replies": 22
+    }
+  },
+  {
+    "id": "15",
+    "date": "2026-01-26",
+    "category": "Dapp",
+    "type": "Sponsored",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 6756,
+      "likes": 37,
+      "retweets": 2,
+      "replies": 17
+    }
+  },
+  {
+    "id": "16",
+    "date": "2026-01-26",
+    "category": "Personal Life",
+    "type": "Organic",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 3409,
+      "likes": 46,
+      "retweets": 1,
+      "replies": 18
+    }
+  },
+  {
+    "id": "17",
+    "date": "2026-01-26",
+    "category": "-",
+    "type": "Other",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 13863.5,
+      "likes": 115.5,
+      "retweets": 19,
+      "replies": 19
+    }
+  },
+  {
+    "id": "18",
+    "date": "2026-01-26",
+    "category": "Industry research on whats the organic vs sponsored ratio",
+    "type": "Other",
+    "topic": "",
+    "url": "",
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0
+    }
+  }
+]

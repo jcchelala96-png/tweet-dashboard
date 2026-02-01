@@ -1,0 +1,17 @@
+{
+  "categories": [
+    "Education",
+    "Personal",
+    "Promotion",
+    "News",
+    "Sponsored",
+    "Airdrop",
+    "Thread"
+  ],
+  "types": [
+    "Tweet",
+    "Video",
+    "Quote",
+    "Sponsored"
+  ]
+}
