@@ -53,6 +53,9 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
             if (result.data) {
                 setFormData(prev => ({
                     ...prev,
+                    date: result.data.created_at
+                        ? new Date(result.data.created_at).toISOString().split('T')[0]
+                        : prev.date,
                     metrics: {
                         views: result.data.views || 0,
                         likes: result.data.favorite_count || 0,
@@ -101,25 +104,14 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
         }
     };
 
-    const buttonStyle = {
-        background: 'linear-gradient(135deg, #d4b896 0%, #c4a67a 100%)',
-    };
-
-    const buttonHoverStyle = {
-        background: 'linear-gradient(135deg, #8b6f47 0%, #6b5237 100%)',
-    };
-
     if (!isOpen) {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="w-full py-4 px-6 rounded-xl text-lg font-semibold text-[#4a3a2a] transition-all duration-200 hover:text-white hover:-translate-y-0.5 hover:shadow-lg"
-                style={buttonStyle}
-                onMouseEnter={(e) => {
-                    Object.assign(e.currentTarget.style, buttonHoverStyle);
-                }}
-                onMouseLeave={(e) => {
-                    Object.assign(e.currentTarget.style, buttonStyle);
+                className="w-full py-4 px-6 rounded-xl text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                style={{
+                    background: 'var(--accent-primary)',
+                    color: 'white',
                 }}
             >
                 + Add New Tweet
@@ -128,17 +120,18 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
     }
 
     return (
-        <div className="bg-[#fffbf7] rounded-3xl p-8 shadow-xl">
+        <div className="card" style={{ background: 'var(--background-card)' }}>
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h3 className="text-2xl text-[#5a4a3a]" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    <h3 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                         Add New Tweet
                     </h3>
-                    <p className="text-sm text-[#7a6a5a] mt-1">Track your content performance</p>
+                    <p className="text-sm mt-1" style={{ color: 'var(--foreground-muted)' }}>Track your content performance</p>
                 </div>
                 <button
                     onClick={() => setIsOpen(false)}
-                    className="text-[#7a6a5a] hover:text-[#5a4a3a] transition-colors px-3 py-1 rounded-lg hover:bg-[#f5e6d3]"
+                    className="px-3 py-1 rounded-lg transition-colors"
+                    style={{ color: 'var(--foreground-muted)' }}
                 >
                     Cancel
                 </button>
@@ -148,23 +141,33 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
                 {/* Date & URL Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Date</label>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Date</label>
                         <input
                             type="date"
                             required
-                            className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] transition-all"
+                            className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all"
+                            style={{
+                                background: 'var(--background-elevated)',
+                                border: '1px solid var(--border-subtle)',
+                                color: 'var(--foreground)',
+                            }}
                             value={formData.date}
                             onChange={e => setFormData({ ...formData, date: e.target.value })}
                         />
                     </div>
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Tweet URL</label>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Tweet URL</label>
                         <div className="flex gap-3">
                             <input
                                 type="url"
                                 required
                                 placeholder="https://x.com/..."
-                                className="flex-1 bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] placeholder-[#b0a090] focus:outline-none focus:border-[#8b6f47] transition-all"
+                                className="flex-1 rounded-xl px-4 py-3 focus:outline-none transition-all"
+                                style={{
+                                    background: 'var(--background-elevated)',
+                                    border: '1px solid var(--border-subtle)',
+                                    color: 'var(--foreground)',
+                                }}
                                 value={formData.url || ''}
                                 onChange={e => {
                                     setFormData({ ...formData, url: e.target.value });
@@ -175,20 +178,17 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
                                 type="button"
                                 onClick={handleAutoFetch}
                                 disabled={isFetching || !formData.url}
-                                className="px-5 py-3 rounded-xl font-semibold text-[#4a3a2a] transition-all duration-200 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
-                                style={buttonStyle}
-                                onMouseEnter={(e) => {
-                                    if (!e.currentTarget.disabled) Object.assign(e.currentTarget.style, buttonHoverStyle);
-                                }}
-                                onMouseLeave={(e) => {
-                                    Object.assign(e.currentTarget.style, buttonStyle);
+                                className="px-5 py-3 rounded-xl font-semibold transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                                style={{
+                                    background: 'var(--accent-primary)',
+                                    color: 'white',
                                 }}
                             >
                                 {isFetching ? 'Fetching...' : 'Fetch'}
                             </button>
                         </div>
                         {fetchError && (
-                            <p className="text-sm text-[#8b6f47] mt-2">{fetchError}</p>
+                            <p className="text-sm mt-2" style={{ color: 'var(--accent-warning)' }}>{fetchError}</p>
                         )}
                     </div>
                 </div>
@@ -196,9 +196,14 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
                 {/* Category & Type */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Category</label>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Category</label>
                         <select
-                            className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] transition-all cursor-pointer"
+                            className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all cursor-pointer"
+                            style={{
+                                background: 'var(--background-elevated)',
+                                border: '1px solid var(--border-subtle)',
+                                color: 'var(--foreground)',
+                            }}
                             value={formData.category}
                             onChange={e => setFormData({ ...formData, category: e.target.value })}
                         >
@@ -208,9 +213,14 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Type</label>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Type</label>
                         <select
-                            className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] transition-all cursor-pointer"
+                            className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all cursor-pointer"
+                            style={{
+                                background: 'var(--background-elevated)',
+                                border: '1px solid var(--border-subtle)',
+                                color: 'var(--foreground)',
+                            }}
                             value={formData.type}
                             onChange={e => setFormData({ ...formData, type: e.target.value })}
                         >
@@ -223,15 +233,20 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
 
                 {/* Metrics */}
                 <div>
-                    <label className="block text-sm font-medium text-[#5a4a3a] mb-3">Metrics</label>
+                    <label className="block text-sm font-medium mb-3" style={{ color: 'var(--foreground-muted)' }}>Metrics</label>
                     <div className="grid grid-cols-5 gap-4">
                         {['views', 'likes', 'retweets', 'replies', 'bookmarks'].map((metric) => (
                             <div key={metric}>
-                                <label className="block text-xs text-[#7a6a5a] mb-1.5 capitalize">{metric}</label>
+                                <label className="block text-xs mb-1.5 capitalize" style={{ color: 'var(--foreground-subtle)' }}>{metric}</label>
                                 <input
                                     type="number"
                                     min="0"
-                                    className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] transition-all"
+                                    className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all"
+                                    style={{
+                                        background: 'var(--background-elevated)',
+                                        border: '1px solid var(--border-subtle)',
+                                        color: 'var(--foreground)',
+                                    }}
                                     value={formData.metrics?.[metric as keyof typeof formData.metrics]}
                                     onChange={e => setFormData({
                                         ...formData,
@@ -248,13 +263,10 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="px-8 py-3 rounded-xl text-lg font-semibold text-[#4a3a2a] transition-all duration-200 hover:text-white hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
-                        style={buttonStyle}
-                        onMouseEnter={(e) => {
-                            if (!e.currentTarget.disabled) Object.assign(e.currentTarget.style, buttonHoverStyle);
-                        }}
-                        onMouseLeave={(e) => {
-                            Object.assign(e.currentTarget.style, buttonStyle);
+                        className="px-8 py-3 rounded-xl text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
+                        style={{
+                            background: 'var(--accent-primary)',
+                            color: 'white',
                         }}
                     >
                         {isSubmitting ? 'Saving...' : 'Save Tweet'}
@@ -264,3 +276,4 @@ export function AddTweetForm({ onAdd, categories, types }: AddTweetFormProps) {
         </div>
     );
 }
+

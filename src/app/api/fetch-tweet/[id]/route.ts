@@ -1,5 +1,42 @@
 import { NextResponse } from 'next/server';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function extractMetrics(data: any) {
+    const views =
+        data.views?.count ||
+        data.views_count ||
+        data.viewCount ||
+        (typeof data.views === 'number' ? data.views : 0) ||
+        parseInt(data.views) ||
+        0;
+
+    const likes =
+        data.favorite_count ||
+        data.like_count ||
+        data.legacy?.favorite_count ||
+        0;
+
+    const retweets =
+        data.retweet_count ||
+        data.retweetCount ||
+        data.legacy?.retweet_count ||
+        0;
+
+    const replies =
+        data.reply_count ||
+        data.replyCount ||
+        data.legacy?.reply_count ||
+        data.conversation_count ||
+        0;
+
+    const bookmarks =
+        data.bookmark_count ||
+        data.bookmarkCount ||
+        0;
+
+    return { views, likes, retweets, replies, bookmarks };
+}
+
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
@@ -23,22 +60,37 @@ export async function GET(
 
             if (response.ok) {
                 const data = await response.json();
+                console.log('Tweet API Response:', JSON.stringify(data, null, 2));
 
-                // Handle syndication API format
+                // Handle syndication API format (top-level metrics)
                 if (data.favorite_count !== undefined || data.views_count !== undefined) {
+                    const metrics = extractMetrics(data);
                     return NextResponse.json({
                         data: {
-                            views: data.views_count || data.views || 0,
-                            favorite_count: data.favorite_count || 0,
-                            retweet_count: data.retweet_count || 0,
-                            reply_count: data.reply_count || 0,
+                            created_at: data.created_at || null,
+                            views: metrics.views,
+                            favorite_count: metrics.likes,
+                            retweet_count: metrics.retweets,
+                            reply_count: metrics.replies,
+                            bookmark_count: metrics.bookmarks,
                         }
                     });
                 }
 
-                // Handle react-tweet API format
+                // Handle react-tweet API format (metrics nested under data.data)
                 if (data.data) {
-                    return NextResponse.json(data);
+                    const tweetData = data.data;
+                    const metrics = extractMetrics(tweetData);
+                    return NextResponse.json({
+                        data: {
+                            created_at: tweetData.created_at || null,
+                            views: metrics.views,
+                            favorite_count: metrics.likes,
+                            retweet_count: metrics.retweets,
+                            reply_count: metrics.replies,
+                            bookmark_count: metrics.bookmarks,
+                        }
+                    });
                 }
             }
         } catch (error) {
