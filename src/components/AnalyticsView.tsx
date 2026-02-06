@@ -27,13 +27,14 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
     if (active && payload && payload.length) {
         return (
             <div className="custom-tooltip">
-                <p className="label">{label}</p>
+                <p className="label">{label || payload[0].name}</p>
                 <p className="value">{payload[0].value.toLocaleString()}</p>
             </div>
         );
     }
     return null;
 };
+
 
 export function AnalyticsView({ tweets }: AnalyticsViewProps) {
     // Calculate stats
@@ -86,6 +87,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         const weeklyMap: Record<string, {
             totalViews: number;
             totalLikes: number;
+            totalBookmarks: number;
             totalEngagement: number;
             count: number;
             date: string;
@@ -94,10 +96,11 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
         tweets.forEach(t => {
             const weekLabel = getWeekLabel(t.date);
             if (!weeklyMap[weekLabel]) {
-                weeklyMap[weekLabel] = { totalViews: 0, totalLikes: 0, totalEngagement: 0, count: 0, date: t.date };
+                weeklyMap[weekLabel] = { totalViews: 0, totalLikes: 0, totalBookmarks: 0, totalEngagement: 0, count: 0, date: t.date };
             }
             weeklyMap[weekLabel].totalViews += t.metrics.views;
             weeklyMap[weekLabel].totalLikes += t.metrics.likes;
+            weeklyMap[weekLabel].totalBookmarks += t.metrics.bookmarks || 0;
             weeklyMap[weekLabel].totalEngagement += t.metrics.likes + t.metrics.retweets + t.metrics.replies;
             weeklyMap[weekLabel].count += 1;
         });
@@ -107,6 +110,7 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                 weekLabel,
                 avgViews: Math.round(data.totalViews / data.count),
                 avgLikes: Math.round(data.totalLikes / data.count),
+                avgBookmarks: Math.round(data.totalBookmarks / data.count),
                 avgEngagement: Math.round(data.totalEngagement / data.count),
                 sortKey: data.date,
             }))
@@ -238,9 +242,37 @@ export function AnalyticsView({ tweets }: AnalyticsViewProps) {
                         <EmptyState />
                     )}
                 </div>
+
+                {/* Bookmarks Chart */}
+                <div className="chart-container">
+                    <h3>Average Bookmarks per Tweet</h3>
+                    {weeklyAverages.length > 0 ? (
+                        <ResponsiveContainer width="100%" height={CHART_CONFIG.height}>
+                            <BarChart data={weeklyAverages} margin={CHART_CONFIG.margins}>
+                                <XAxis
+                                    dataKey="weekLabel"
+                                    tick={{ fill: 'var(--foreground-muted)', fontSize: 11 }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                />
+                                <YAxis
+                                    tick={{ fill: 'var(--foreground-muted)', fontSize: 11 }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                    width={50}
+                                />
+                                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
+                                <Bar dataKey="avgBookmarks" fill="var(--chart-4)" radius={[6, 6, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <EmptyState />
+                    )}
+                </div>
             </div>
 
             {/* Breakdown Charts */}
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Category Breakdown */}
                 <div className="chart-container">

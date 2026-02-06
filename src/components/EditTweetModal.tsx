@@ -59,22 +59,24 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
         }
     };
 
-    const buttonStyle = {
-        background: 'linear-gradient(135deg, #d4b896 0%, #c4a67a 100%)',
-    };
-
-    const buttonHoverStyle = {
-        background: 'linear-gradient(135deg, #8b6f47 0%, #6b5237 100%)',
+    const inputStyle = {
+        background: 'var(--background-elevated)',
+        border: '1px solid var(--border-subtle)',
+        color: 'var(--foreground)',
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-            <div className="bg-[#fffbf7] rounded-3xl p-8 max-w-2xl w-full shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={onClose}>
+            <div
+                className="card max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                style={{ background: 'var(--background-card)' }}
+                onClick={e => e.stopPropagation()}
+            >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl text-[#5a4a3a]" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    <h2 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                         Edit Tweet
                     </h2>
-                    <button onClick={onClose} className="text-[#7a6a5a] hover:text-[#5a4a3a]">
+                    <button onClick={onClose} style={{ color: 'var(--foreground-muted)' }}>
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -83,21 +85,23 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
                     {/* Date & URL */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Date</label>
+                            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Date</label>
                             <input
                                 type="date"
                                 required
-                                className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47]"
+                                className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all"
+                                style={inputStyle}
                                 value={formData.date}
                                 onChange={e => setFormData({ ...formData, date: e.target.value })}
                             />
                         </div>
                         <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Tweet URL</label>
+                            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Tweet URL</label>
                             <input
                                 type="url"
                                 required
-                                className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47]"
+                                className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all"
+                                style={inputStyle}
                                 value={formData.url}
                                 onChange={e => setFormData({ ...formData, url: e.target.value })}
                             />
@@ -107,9 +111,10 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
                     {/* Category & Type */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Category</label>
+                            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Category</label>
                             <select
-                                className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] cursor-pointer"
+                                className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all cursor-pointer"
+                                style={inputStyle}
                                 value={formData.category}
                                 onChange={e => setFormData({ ...formData, category: e.target.value })}
                             >
@@ -119,9 +124,10 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-[#5a4a3a] mb-2">Type</label>
+                            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>Type</label>
                             <select
-                                className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47] cursor-pointer"
+                                className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all cursor-pointer"
+                                style={inputStyle}
                                 value={formData.type}
                                 onChange={e => setFormData({ ...formData, type: e.target.value })}
                             >
@@ -134,15 +140,16 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
 
                     {/* Metrics */}
                     <div>
-                        <label className="block text-sm font-medium text-[#5a4a3a] mb-3">Metrics</label>
+                        <label className="block text-sm font-medium mb-3" style={{ color: 'var(--foreground-muted)' }}>Metrics</label>
                         <div className="grid grid-cols-5 gap-4">
                             {['views', 'likes', 'retweets', 'replies', 'bookmarks'].map((metric) => (
                                 <div key={metric}>
-                                    <label className="block text-xs text-[#7a6a5a] mb-1.5 capitalize">{metric}</label>
+                                    <label className="block text-xs mb-1.5 capitalize" style={{ color: 'var(--foreground-subtle)' }}>{metric}</label>
                                     <input
                                         type="number"
                                         min="0"
-                                        className="w-full bg-white border-2 border-[#e0d0c0] rounded-xl px-4 py-3 text-[#5a4a3a] focus:outline-none focus:border-[#8b6f47]"
+                                        className="w-full rounded-xl px-4 py-3 focus:outline-none transition-all"
+                                        style={inputStyle}
                                         value={formData.metrics[metric as keyof typeof formData.metrics] || 0}
                                         onChange={e => setFormData({
                                             ...formData,
@@ -159,20 +166,21 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
                         <button
                             type="button"
                             onClick={handleDelete}
-                            className="px-6 py-3 rounded-xl font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                            className="px-6 py-3 rounded-xl font-semibold transition-colors"
+                            style={{
+                                background: 'rgba(239, 68, 68, 0.15)',
+                                color: 'var(--accent-danger)',
+                            }}
                         >
                             Delete Tweet
                         </button>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="px-8 py-3 rounded-xl text-lg font-semibold text-[#4a3a2a] transition-all duration-200 hover:text-white hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
-                            style={buttonStyle}
-                            onMouseEnter={(e) => {
-                                if (!e.currentTarget.disabled) Object.assign(e.currentTarget.style, buttonHoverStyle);
-                            }}
-                            onMouseLeave={(e) => {
-                                Object.assign(e.currentTarget.style, buttonStyle);
+                            className="px-8 py-3 rounded-xl text-lg font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50"
+                            style={{
+                                background: 'var(--accent-primary)',
+                                color: 'white',
                             }}
                         >
                             {isSubmitting ? 'Saving...' : 'Save Changes'}
@@ -183,3 +191,4 @@ export function EditTweetModal({ tweet, categories, types, onSave, onDelete, onC
         </div>
     );
 }
+

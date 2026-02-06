@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Plus, Settings } from 'lucide-react';
 
 interface SettingsPanelProps {
@@ -35,11 +36,21 @@ export function SettingsPanel({ categories, types, onUpdate }: SettingsPanelProp
         onUpdate();
     };
 
+    const inputStyle = {
+        background: 'var(--background-elevated)',
+        border: '1px solid var(--border-subtle)',
+        color: 'var(--foreground)',
+    };
+
     if (!isOpen) {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-[#7a6a5a] bg-[#f5e6d3] hover:bg-[#e8d4c4] transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+                style={{
+                    color: 'var(--foreground-muted)',
+                    border: '1px solid var(--border-subtle)',
+                }}
             >
                 <Settings className="w-4 h-4" />
                 Settings
@@ -47,26 +58,30 @@ export function SettingsPanel({ categories, types, onUpdate }: SettingsPanelProp
         );
     }
 
-    return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setIsOpen(false)}>
-            <div className="bg-[#fffbf7] rounded-3xl p-8 max-w-lg w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+    return createPortal(
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto" onClick={() => setIsOpen(false)}>
+            <div
+                className="card max-w-lg w-full my-auto"
+                style={{ background: 'var(--background-card)' }}
+                onClick={e => e.stopPropagation()}
+            >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl text-[#5a4a3a]" style={{ fontFamily: 'var(--font-lora), Lora, serif' }}>
+                    <h2 className="text-2xl font-semibold" style={{ color: 'var(--foreground)' }}>
                         Settings
                     </h2>
-                    <button onClick={() => setIsOpen(false)} className="text-[#7a6a5a] hover:text-[#5a4a3a]">
+                    <button onClick={() => setIsOpen(false)} style={{ color: 'var(--foreground-muted)' }}>
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Categories */}
                 <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-[#5a4a3a] mb-3 uppercase tracking-wider">Categories</h3>
+                    <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--foreground-muted)' }}>Categories</h3>
                     <div className="flex flex-wrap gap-2 mb-3">
                         {categories.map(cat => (
-                            <span key={cat} className="flex items-center gap-1 px-3 py-1 bg-[#f5e6d3] text-[#5a4a3a] rounded-full text-sm">
+                            <span key={cat} className="pill flex items-center gap-1">
                                 {cat}
-                                <button onClick={() => handleRemove('remove-category', cat)} className="ml-1 hover:text-red-600">
+                                <button onClick={() => handleRemove('remove-category', cat)} className="ml-1" style={{ color: 'var(--accent-danger)' }}>
                                     <X className="w-3 h-3" />
                                 </button>
                             </span>
@@ -79,11 +94,13 @@ export function SettingsPanel({ categories, types, onUpdate }: SettingsPanelProp
                             value={newCategory}
                             onChange={e => setNewCategory(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleAdd('add-category', newCategory)}
-                            className="flex-1 bg-white border-2 border-[#e0d0c0] rounded-xl px-3 py-2 text-[#5a4a3a] text-sm focus:outline-none focus:border-[#8b6f47]"
+                            className="flex-1 rounded-xl px-3 py-2 text-sm focus:outline-none"
+                            style={inputStyle}
                         />
                         <button
                             onClick={() => handleAdd('add-category', newCategory)}
-                            className="px-3 py-2 bg-[#8b6f47] text-white rounded-xl hover:bg-[#6b5237] transition-colors"
+                            className="px-3 py-2 rounded-xl transition-colors"
+                            style={{ background: 'var(--accent-primary)', color: 'white' }}
                         >
                             <Plus className="w-4 h-4" />
                         </button>
@@ -92,12 +109,12 @@ export function SettingsPanel({ categories, types, onUpdate }: SettingsPanelProp
 
                 {/* Types */}
                 <div>
-                    <h3 className="text-sm font-semibold text-[#5a4a3a] mb-3 uppercase tracking-wider">Types</h3>
+                    <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider" style={{ color: 'var(--foreground-muted)' }}>Types</h3>
                     <div className="flex flex-wrap gap-2 mb-3">
                         {types.map(type => (
-                            <span key={type} className="flex items-center gap-1 px-3 py-1 bg-[#f5e6d3] text-[#5a4a3a] rounded-full text-sm">
+                            <span key={type} className="pill flex items-center gap-1">
                                 {type}
-                                <button onClick={() => handleRemove('remove-type', type)} className="ml-1 hover:text-red-600">
+                                <button onClick={() => handleRemove('remove-type', type)} className="ml-1" style={{ color: 'var(--accent-danger)' }}>
                                     <X className="w-3 h-3" />
                                 </button>
                             </span>
@@ -110,17 +127,21 @@ export function SettingsPanel({ categories, types, onUpdate }: SettingsPanelProp
                             value={newType}
                             onChange={e => setNewType(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleAdd('add-type', newType)}
-                            className="flex-1 bg-white border-2 border-[#e0d0c0] rounded-xl px-3 py-2 text-[#5a4a3a] text-sm focus:outline-none focus:border-[#8b6f47]"
+                            className="flex-1 rounded-xl px-3 py-2 text-sm focus:outline-none"
+                            style={inputStyle}
                         />
                         <button
                             onClick={() => handleAdd('add-type', newType)}
-                            className="px-3 py-2 bg-[#8b6f47] text-white rounded-xl hover:bg-[#6b5237] transition-colors"
+                            className="px-3 py-2 rounded-xl transition-colors"
+                            style={{ background: 'var(--accent-primary)', color: 'white' }}
                         >
                             <Plus className="w-4 h-4" />
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
+
