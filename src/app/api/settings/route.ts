@@ -1,30 +1,26 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 interface Settings {
     categories: string[];
     types: string[];
 }
 
-const settingsPath = path.join(process.cwd(), 'src', 'data', 'settings.json');
-
-function getSettings(): Settings {
-    if (!fs.existsSync(settingsPath)) {
-        const defaultSettings = { categories: ['Education', 'Personal', 'Promotion', 'News'], types: ['Thread', 'Tweet', 'Video', 'Quote'] };
-        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 2));
-        return defaultSettings;
-    }
-    return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-}
-
-function saveSettings(settings: Settings) {
-    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-}
-
 export async function GET() {
     try {
-        const settings = getSettings();
+        const { data, error } = await supabase
+            .from('settings')
+            .select('categories, types')
+            .eq('id', 1)
+            .single();
+
+        if (error) throw error;
+
+        const settings: Settings = {
+            categories: data?.categories || ['Sponsored', 'Organic'],
+            types: data?.types || ['Education', 'Personal', 'News', 'Thread']
+        };
+
         return NextResponse.json(settings);
     } catch (error) {
         console.error('Settings Error:', error);
@@ -35,8 +31,22 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const settings = getSettings();
 
+        // Get current settings
+        const { data: currentData, error: fetchError } = await supabase
+            .from('settings')
+            .select('categories, types')
+            .eq('id', 1)
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        const settings: Settings = {
+            categories: currentData?.categories || [],
+            types: currentData?.types || []
+        };
+
+        // Apply action
         if (body.action === 'add-category' && body.value) {
             if (!settings.categories.includes(body.value)) {
                 settings.categories.push(body.value);
@@ -51,7 +61,17 @@ export async function POST(request: Request) {
             settings.types = settings.types.filter(t => t !== body.value);
         }
 
-        saveSettings(settings);
+        // Save updated settings
+        const { error: updateError } = await supabase
+            .from('settings')
+            .update({
+                categories: settings.categories,
+                types: settings.types
+            })
+            .eq('id', 1);
+
+        if (updateError) throw updateError;
+
         return NextResponse.json(settings);
     } catch (error) {
         console.error('Settings Error:', error);

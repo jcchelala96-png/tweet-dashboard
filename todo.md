@@ -1,67 +1,40 @@
-# Dashboard Development - Complete
+# Tweet Dashboard - Roadmap
 
-## Summary
+## ✅ Completed
 
-Successfully redesigned and deployed the tweet dashboard with improved analytics, better spacing, and user-friendly date labels.
+- Basic analytics dashboard with weekly metrics
+- Add/Edit/Delete tweets functionality
+- Dark theme across all components
+- Settings panel for categories & types
+- Pie charts for category/type breakdown
+- Avg Bookmarks chart
+- Auto-fetch tweet metrics from URL
+- Improved tooltips showing labels
 
-## Final Changes Deployed
+---
 
-### 1. Week Label Improvements
-- Changed from ISO format (2026-W05) to readable date ranges
-- Format: "Jan 19-25" or "Jan 30-Feb 5" (crosses months)
-- Added getWeekLabel() helper function
-- Updated all bar charts to use weekLabel instead of week
+## 🚀 Future Ideas
 
-### 2. Chart Spacing & Padding (Final)
-- BAR_CHART_HEIGHT: 400px
-- BAR_CHART_MARGINS: { top: 20, right: 40, left: 40, bottom: 100 }
-- X_AXIS_HEIGHT: 110px
-- Generous spacing prevents any label clipping
-- All magic numbers extracted to constants
+### High Priority
 
-### 3. Weekly Average Metrics
-- Avg Views per Tweet (Weekly)
-- Avg Engagement per Tweet (Weekly)
-- Avg Likes per Tweet (Weekly)
-- Avg Retweets per Tweet (Weekly)
-- Shows performance quality vs just volume
+- [ ] **Follower Growth Tracking** - Chart showing follower count over time
+- [ ] **Engagement Rate Calculator** - (Likes + RTs + Replies) / Views × 100
+- [ ] **Top Performers View** - Sortable list of top 10 tweets by each metric
 
-### 4. Data Updates
-- User's tweet data committed and deployed
-- Settings updated
-- .gitignore updated
+### Medium Priority
 
-### 5. TypeScript Fixes
-- Fixed Tooltip formatter type errors
-- Handle undefined values with optional chaining
-- Build succeeds without errors
+- [ ] **Goal Setting** - Set weekly targets (e.g., 10k views/week) with progress tracking
+- [ ] **Content Tags** - Multiple tags per tweet for granular filtering
+- [ ] **Export to CSV/PDF** - Download analytics reports
+- [ ] **Tweet Search & Filter** - Filter by date range, category, performance
 
-## Deployment Status
+### Nice to Have
 
-**Live URL**: https://tweet-dashboard-omega.vercel.app
-**Status**: ✓ Ready (deployed 30s ago)
-**Build Time**: 30s
-**Environment**: Production
+- [ ] **Competitor Tracking** - Compare your metrics to another account
+- [ ] **Thread Detection** - Auto-detect and group thread tweets
+- [ ] **A/B Testing Notes** - Track experiments and their results
+- [ ] **Email/Telegram Reports** - Weekly digest of performance
 
-## Commits Pushed (8 total)
+---
 
-1. Redesign analytics with weekly average metrics
-2. Polish analytics dashboard design and spacing
-3. Refactor AnalyticsView with extracted constants and improved spacing
-4. Apply generous spacing to fix chart padding issues
-5. Change week labels from ISO format to date ranges
-6. Update data files with user additions
-7. Fix TypeScript error in Tooltip formatters
-8. (Previous commits from earlier work)
-
-## All Changes Live
-
-- ✓ Generous chart padding (no clipping)
-- ✓ Date range labels (readable format)
-- ✓ Weekly average metrics (better comparisons)
-- ✓ User's data included
-- ✓ Clean, maintainable code with constants
-- ✓ TypeScript errors resolved
-- ✓ Production deployment successful
-
-Dashboard is ready for use at https://tweet-dashboard-omega.vercel.app
+**Live URL**: <https://tweet-dashboard-omega.vercel.app>
